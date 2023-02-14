@@ -16,13 +16,12 @@ export class ContactForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { contacts, onSubmit } = this.props;
-    const { name, number } = this.state;
+    const { name} = this.state;
     const id = nanoid();
     if (contacts.find(contact => contact.name === name)) {
       alert(`${name} is already in contacts.`);
       return;
-    }
-    onSubmit({ id, ...this.state });
+    } onSubmit({ id, ...this.state });
     this.setState({ name: '', number: '' });
     // console.log(onSubmit({id, ...this.state}));
   };
