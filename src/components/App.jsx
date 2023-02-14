@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
-// import {Filter} from './Filter/Filter'
+import { Filter } from './Filter/Filter';
 import css from './App.module.css';
 
 export class App extends Component {
@@ -16,32 +16,38 @@ export class App extends Component {
   };
 
   addContact = contact => {
-    console.log(contact);
+   //  console.log(contact);
     this.setState(prevState => {
-      console.log(prevState);
+      // console.log(prevState);
       return { contacts: [contact, ...prevState.contacts] };
     });
   };
-  deleteContact = id => {
-    console.log(id);
-	 this.setState(prevState => {
-		return {contacts: prevState.contacts.filter(item => item.id !== id)}
-	 })
+  deleteContact = code => {
+   //  console.log(code);
+    this.setState(prevState => {
+      return { contacts: prevState.contacts.filter(({ id }) => id !== code) };
+    });
   };
+  isFilterContacts = wordFilter => {
+   //  console.log(wordFilter);
+    this.setState({ filter: wordFilter.toLowerCase() });
+  };
+
   render() {
-    console.log(this.state.contacts);
+    const { contacts, filter } = this.state;
+    const contactsAfterFiltr = contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter)
+    );
+   //  console.log(this.state);
     return (
       <div className={css.app}>
         <h1>Phonebook</h1>
-        <ContactForm
-          onSubmit={this.addContact}
-          contacts={this.state.contacts}
-        />
+        <ContactForm onSubmit={this.addContact} contacts={contacts} />
 
         <h2>Contacts</h2>
-        {/* <Filter contacts={this.state.contacts} />  */}
+        <Filter isFilter={this.isFilterContacts} />
         <ContactList
-          contacts={this.state.contacts}
+          contacts={contactsAfterFiltr}
           isDelete={this.deleteContact}
         />
       </div>
